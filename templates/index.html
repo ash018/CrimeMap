@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+
+<head>
+    <title>{{ page_title }}</title>
+
+    <!--link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"-->
+    <!-- <link rel="icon" href="{{ url_for('static', filename='index.png') }}"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+
+
+<body>
+
+    <div class="container" style="margin-top:50px;">
+        <div class="row">
+            {% with messages = get_flashed_messages() %} {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %} {% endwith %}
+            <div class="col-md-6 col-md-offset-3 text-center">
+                {% if session_user_name %}
+                <p>Hello <b>{{ session_user_name }}</b></p>
+                {% endif %}
+                <a href="{{ url_for('get_news') }}" class="btn btn-primary">Latest News</a>
+                <a href="{{ url_for('get_weather') }}" class="btn btn-primary">Weather Info</a>
+                <a href="{{ url_for('get_currency') }}" class="btn btn-primary">Currency Convert</a>
+                <a href="{{ url_for('crimeMap') }}" class="btn btn-primary">Crime Map</a>
+                <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="response"></div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        $('button#btn').click(function() {
+            $.ajax({
+                url: "/_get_data/",
+                type: "POST",
+                success: function(resp) {
+                    $('div#response').append(resp.data);
+                }
+            });
+        });
+    </script>
+
+    <ul>
+        {% for elem in myList %}
+
+        <li>{{elem}}</li>
+
+        {% endfor %}
+    </ul>
+
+</body>
+
+</html>
